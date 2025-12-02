@@ -1,9 +1,8 @@
-import { readFileSync } from "node:fs";
+import { readInput } from "../utils.ts";
 
 try {
     const filePath = new URL("input.txt", import.meta.url);
-    const rawInput = readFileSync(filePath, { encoding: "utf8" }).trim();
-    const inputArr = rawInput.split("\n");
+    const inputArr = readInput(filePath);
 
     const CUTOFF = 100;
 
