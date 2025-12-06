@@ -8,4 +8,4 @@ console.log(` 1   | 1    | ${day1.part1()}`);
 console.log(`     | 2    | ${day1.part2()}`);
 console.log(" --- | ---- | ------");
 console.log(` 2   | 1    | ${day2.part1()}`);
-console.log(`     | 2    | -`);
+console.log(`     | 2    | ${day2.part2()}`);
