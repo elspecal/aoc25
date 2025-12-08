@@ -1,7 +1,30 @@
 import { readInput } from "../utils.ts";
 
 export function part1() {
-    return sumInvalidIds(isIdInvalid);
+    const filePath = new URL("input.txt", import.meta.url);
+    const idRanges = readInput(filePath, ",");
+
+    const checkedIds = new Map<number, boolean>();
+    let sum = 0;
+
+    idRanges.forEach((range) => {
+        const [firstId, lastId] = range.split("-");
+
+        for (let id = parseInt(firstId); id <= parseInt(lastId); id++) {
+            if (!checkedIds.has(id)) {
+                if (isIdInvalid(id.toString(10))) {
+                    sum += id;
+                    checkedIds.set(id, true);
+                } else {
+                    checkedIds.set(id, false);
+                }
+            } else if (checkedIds.get(id)) {
+                sum += id;
+            }
+        }
+    });
+
+    return sum;
 }
 
 export function part2() {
@@ -15,33 +38,6 @@ export function part2() {
         const invalids = collectInvalids(firstId, lastId);
 
         invalids.forEach((invalid) => (sum += invalid));
-    });
-
-    return sum;
-}
-
-function sumInvalidIds(invalidator: (id: string) => boolean) {
-    const filePath = new URL("input.txt", import.meta.url);
-    const idRanges = readInput(filePath, ",");
-
-    const checkedIds = new Map<number, boolean>();
-    let sum = 0;
-
-    idRanges.forEach((range) => {
-        const [firstId, lastId] = range.split("-");
-
-        for (let id = parseInt(firstId); id <= parseInt(lastId); id++) {
-            if (!checkedIds.has(id)) {
-                if (invalidator(id.toString(10))) {
-                    sum += id;
-                    checkedIds.set(id, true);
-                } else {
-                    checkedIds.set(id, false);
-                }
-            } else if (checkedIds.get(id)) {
-                sum += id;
-            }
-        }
     });
 
     return sum;
