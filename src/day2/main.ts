@@ -33,14 +33,12 @@ function sumInvalidIds(invalidator: (id: string) => boolean) {
         for (let id = parseInt(firstId); id <= parseInt(lastId); id++) {
             if (!checkedIds.has(id)) {
                 if (invalidator(id.toString(10))) {
-                    // console.log(`invalid: ${id}`);
                     sum += id;
                     checkedIds.set(id, true);
                 } else {
                     checkedIds.set(id, false);
                 }
             } else if (checkedIds.get(id)) {
-                // console.log(`cached invalid: ${id}`);
                 sum += id;
             }
         }
@@ -61,13 +59,15 @@ function isIdInvalid(id: string) {
 }
 
 function collectInvalids(lowerLimit: string, upperLimit: string) {
-    const INITIAL_LENGTH = lowerLimit.length > 1 ? lowerLimit.length : 2;
-    const DIVISOR_UPPER_LIMIT = Math.floor(upperLimit.length / 2);
-
+    const initialLength = lowerLimit.length > 1 ? lowerLimit.length : 2;
     const invalids = new Set<number>();
 
-    for (let len = INITIAL_LENGTH; len <= upperLimit.length; len++) {
-        for (let divisor = 1; divisor <= DIVISOR_UPPER_LIMIT; divisor++) {
+    for (let len = initialLength; len <= upperLimit.length; len++) {
+        for (
+            let divisor = 1;
+            divisor <= Math.floor(upperLimit.length / 2);
+            divisor++
+        ) {
             if (len % divisor) continue;
 
             const min = Math.pow(10, len - 1);
@@ -79,8 +79,9 @@ function collectInvalids(lowerLimit: string, upperLimit: string) {
             if (min > parseInt(lowerLimit)) {
                 initialSample = getBaseInts(min, divisor);
             } else if (
-                extrapolate(lowerLimit, divisor, len / divisor) >=
-                parseInt(lowerLimit)
+                parseInt(
+                    getBaseInts(lowerLimit, divisor).repeat(len / divisor),
+                ) >= parseInt(lowerLimit)
             ) {
                 initialSample = getBaseInts(lowerLimit, divisor);
             } else {
@@ -90,8 +91,9 @@ function collectInvalids(lowerLimit: string, upperLimit: string) {
             if (max < parseInt(upperLimit)) {
                 sampleUpperLimit = getBaseInts(max, divisor);
             } else if (
-                extrapolate(upperLimit, divisor, len / divisor) <=
-                parseInt(upperLimit)
+                parseInt(
+                    getBaseInts(upperLimit, divisor).repeat(len / divisor),
+                ) <= parseInt(upperLimit)
             ) {
                 sampleUpperLimit = getBaseInts(upperLimit, divisor);
             } else {
@@ -111,13 +113,6 @@ function collectInvalids(lowerLimit: string, upperLimit: string) {
     }
 
     return invalids;
-}
-
-function extrapolate(id: string | number, sampleSize: number, repeats: number) {
-    const base = getBaseInts(id, sampleSize);
-    const extrapolated = base.repeat(repeats);
-
-    return parseInt(extrapolated);
 }
 
 function getBaseInts(id: string | number, length: number, modifier?: -1 | 1) {
