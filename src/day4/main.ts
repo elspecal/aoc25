@@ -10,28 +10,58 @@ export function partOne() {
             row.split("").reduce((rowSum, cell, colIdx) => {
                 if (cell != "@") return rowSum;
 
-                const adjacents = [
-                    [rowIdx - 1, colIdx - 1],
-                    [rowIdx - 1, colIdx],
-                    [rowIdx - 1, colIdx + 1],
-                    [rowIdx, colIdx - 1],
-                    [rowIdx, colIdx + 1],
-                    [rowIdx + 1, colIdx - 1],
-                    [rowIdx + 1, colIdx],
-                    [rowIdx + 1, colIdx + 1],
-                ];
-
-                let cnt = 0;
-
-                for (let i = 0; i < 8 && cnt < 4; i++) {
-                    const [r, c] = adjacents[i];
-                    if (_grid[r]?.[c] == "@") {
-                        cnt++;
-                    }
-                }
-
-                return cnt < 4 ? rowSum + 1 : rowSum;
+                return isRollAccessible(_grid, rowIdx, colIdx)
+                    ? rowSum + 1
+                    : rowSum;
             }, 0),
         0,
     );
+}
+
+export function partTwo() {
+    let modifiedGrid = grid.map((r) => r.split(""));
+    let removed = 0;
+
+    while (true) {
+        const previouselyRemoved = removed;
+
+        modifiedGrid = modifiedGrid.map((row, rowIdx, _grid) =>
+            row.map((cell, colIdx) => {
+                if (cell != "@") return cell;
+                if (!isRollAccessible(_grid, rowIdx, colIdx)) return "@";
+
+                removed++;
+
+                return ".";
+            }),
+        );
+        if (previouselyRemoved == removed) break;
+    }
+
+    return removed;
+}
+
+function isRollAccessible(
+    grid: string[] | string[][],
+    rIdx: number,
+    cIdx: number,
+) {
+    const adjacents = [
+        [rIdx - 1, cIdx - 1],
+        [rIdx - 1, cIdx],
+        [rIdx - 1, cIdx + 1],
+        [rIdx, cIdx - 1],
+        [rIdx, cIdx + 1],
+        [rIdx + 1, cIdx - 1],
+        [rIdx + 1, cIdx],
+        [rIdx + 1, cIdx + 1],
+    ];
+
+    for (let i = 0, cnt = 0; i < 8; i++) {
+        const [r, c] = adjacents[i];
+        if (grid[r]?.[c] == "@") cnt++;
+        if (cnt == 4) return false;
+    }
+
+    return true;
 }
