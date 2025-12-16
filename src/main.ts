@@ -24,4 +24,4 @@ console.log(` 5   | 1    | ${day5.partOne()}`);
 console.log(`     | 2    | ${day5.partTwo()}`);
 console.log(" --- | ---- | ------");
 console.log(` 6   | 1    | ${day6.partOne()}`);
-console.log(`     | 2    | -`);
+console.log(`     | 2    | ${day6.partTwo()}`);
