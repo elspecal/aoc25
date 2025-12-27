@@ -4,6 +4,7 @@ import * as day3 from "./day3/main.ts";
 import * as day4 from "./day4/main.ts";
 import * as day5 from "./day5/main.ts";
 import * as day6 from "./day6/main.ts";
+import * as day7 from "./day7/main.ts";
 
 console.log("\n");
 console.log(" DAY | PART | RESULT");
@@ -25,3 +26,5 @@ console.log(`     | 2    | ${day5.partTwo()}`);
 console.log(" --- | ---- | ------");
 console.log(` 6   | 1    | ${day6.partOne()}`);
 console.log(`     | 2    | ${day6.partTwo()}`);
+console.log(" --- | ---- | ------");
+console.log(` 7   | 1    | ${day7.partOne()}`);
