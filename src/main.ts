@@ -28,3 +28,4 @@ console.log(` 6   | 1    | ${day6.partOne()}`);
 console.log(`     | 2    | ${day6.partTwo()}`);
 console.log(" --- | ---- | ------");
 console.log(` 7   | 1    | ${day7.partOne()}`);
+console.log(` 7   | 2    | ${day7.partTwo()}`);
